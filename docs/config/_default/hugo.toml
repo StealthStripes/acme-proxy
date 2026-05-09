@@ -1,5 +1,5 @@
-baseURL = 'http://docs.acme-proxy.es.net'
-title = 'ACME Proxy'
+baseURL = 'http://docs.acme-proxy.es.net/'
+title = 'acme-proxy'
 theme = 'hugo-book'
 
 # Book configuration

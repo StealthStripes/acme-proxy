@@ -1,10 +1,14 @@
-# ACME Server as a Registration Authority
+# About
 
 `acme-proxy` is a standalone ACME server built on [step-ca](https://github.com/smallstep/certificates) that operates in [registration authority (RA)](https://smallstep.com/docs/registration-authorities/) mode. It accepts certificate orders and validates certificate requests using the ACME protocol (RFC 8555), but does **NOT** sign certificates or store private keys.
 
+## Documentation
+
+Checkout our [documentation site](https://software.es.net/acme-proxy) for detailed examples on usage, installation instructions, configuration etc.
+
 ## How It Works
 
-`acme-proxy` runs as an ACME server inside your enterprise environment, acting as an intermediary between your internal infrastructure and an external certificate authority service (such as Sectigo). When a client successfully completes an ACME challenge, `acme-proxy` forwards the certificate signing request to an external certificate authority (CA) that supports External Account Binding (EAB). The external CA signs the certificate and returns it to the client through `acme-proxy`.
+`acme-proxy` runs as an ACME server inside your trusted network, acting as an intermediary between your internal infrastructure and an external certificate authority service (such as Sectigo). When a client successfully completes an ACME challenge, `acme-proxy` forwards the certificate signing request to an external certificate authority (CA) that supports External Account Binding (EAB). The external CA signs the certificate and returns it to the client through `acme-proxy`.
 
 **Certificate Request Flow:**
 
