@@ -1,8 +1,3 @@
-+++
-title = 'Contributing'
-weight = 50
-+++
-
 # Setup development environment
 
 1. Install `go >= 1.25`
@@ -14,5 +9,5 @@ weight = 50
 
 1. Fork the repo
 2. In your fork, create a new branch for your work
-3. Commit & push changes to your fork
+3. Add changes in your branch, Commit & push changes to your forked repo
 4. Submit a pull request

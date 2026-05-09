@@ -42,9 +42,7 @@ Example — custom paths and user:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/esnet/acme-proxy/main/install.sh | \
-  sudo INSTALL_DIR=/usr/local/acme-proxy \
-       SERVICE_USER=acmeservice \
-       sh
+  sudo INSTALL_DIR=/usr/local/acme-proxy SERVICE_USER=acmeservice sh
 ```
 
 ### What the script installs
@@ -236,6 +234,7 @@ All install methods use the same `ca.json` configuration format. The install scr
       "account_email": "certadmin@example.com",
       "eab_kid": "your-eab-key-id",
       "eab_hmac_key": "your-eab-hmac-key",
+      "certlifetime": 30,
       "metrics": {
         "enabled": true,
         "port": 9234,
@@ -275,6 +274,7 @@ All install methods use the same `ca.json` configuration format. The install scr
 | `authority.config.account_email` | Yes | Email registered with the upstream CA. |
 | `authority.config.eab_kid` | Yes | External Account Binding Key ID, obtained from your CA's account portal. |
 | `authority.config.eab_hmac_key` | Yes | External Account Binding HMAC key, obtained from your CA's account portal. |
+| `authority.config.certlifetime` | No | Request certificate with a max lifetime period if supported by upstream CA |
 | `authority.config.metrics.enabled` | No | Expose Prometheus metrics. Default: `true`. |
 | `authority.config.metrics.port` | No | Metrics port. Default: `9234`. |
 | `db.dataSource` | Yes | Path to the bbolt KV store directory. Must be writable by the service user. |
@@ -287,7 +287,9 @@ All install methods use the same `ca.json` configuration format. The install scr
 | Sectigo / InCommon RSA OV | `https://acme.sectigo.com/v2/InCommonRSAOV` |
 | ZeroSSL | `https://acme.zerossl.com/v2/DV90` |
 
-> LetsEncrypt does not support External Account Binding and cannot be used as an upstream CA with acme-proxy.
+>[!IMPORTANT]
+>**Note**<br>
+LetsEncrypt as a public certificate authority does not support ACME accounts via External Account Binding and hence it cannot be used as an upstream CA with acme-proxy.
 
 ---
 
@@ -337,6 +339,14 @@ docker logs -f acme-proxy
 
 ```sh
 curl -s https://acmeproxy.example.com/acme/acme/directory | jq .
+
+{
+  "newNonce": "https://proxy.example.com/acme/acme/new-nonce",
+  "newAccount": "https://proxy.example.com/acme/acme/new-account",
+  "newOrder": "https://proxy.example.com/acme/acme/new-order",
+  "revokeCert": "https://proxy.example.com/acme/acme/revoke-cert",
+  "keyChange": "https://proxy.example.com/acme/acme/key-change"
+}
 ```
 
-A JSON object with `newNonce`, `newAccount`, `newOrder` keys confirms the server is running and accepting ACME requests.
+A JSON object with `newNonce`, `newAccount`, `newOrder` keys confirms the ACME server is running and accepting requests.

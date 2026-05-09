@@ -1,9 +1,3 @@
-+++
-title = 'Maintenance'
-weight = 40
-BookToC = true
-+++
-
 # Guide to patching upstream related changes
 
 - While smallstep/certifiates is meant to serve as the upstream Go module for acme-proxy, we have to maintain some patches/fixes ourselves until they get merged upstream. Our patched version of step-ca is currently maintained in a forked repo [esnet/certificates](https://github.com/esnet/certificates).

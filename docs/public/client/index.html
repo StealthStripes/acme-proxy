@@ -10,16 +10,16 @@ https://github.com/alex-shpak/hugo-book
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="ACME Clients# This guide covers installation and system-level configuration of ACME clients for use with acme-proxy. It is intended for system administrators deploying certificate automation on behalf of end users.
 For certificate issuance commands and per-scenario usage, see user.md.
-Table of Contents# Installing ACME Clients Account Registration Configuring Auto-Renewal via Systemd Log Management Installing ACME Clients# Certbot# Note: Certbot’s actively maintained distribution is via Snap. The .deb packages available in apt repositories are no longer maintained by the Certbot project and ship outdated versions.
+Table of Contents# Installing ACME Clients Account Registration Configuring Auto-Renewal via Systemd Log Management Installing ACME Clients# Certbot Note: Certbot’s actively maintained distribution is via Snap. The .deb packages available in apt repositories are no longer maintained by the Certbot project and ship outdated versions.
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="http://localhost:1313/client/">
-  <meta property="og:site_name" content="ACME Proxy">
+  <meta property="og:site_name" content="acme-proxy">
   <meta property="og:title" content="ACME Clients">
   <meta property="og:description" content="ACME Clients# This guide covers installation and system-level configuration of ACME clients for use with acme-proxy. It is intended for system administrators deploying certificate automation on behalf of end users.
 For certificate issuance commands and per-scenario usage, see user.md.
-Table of Contents# Installing ACME Clients Account Registration Configuring Auto-Renewal via Systemd Log Management Installing ACME Clients# Certbot# Note: Certbot’s actively maintained distribution is via Snap. The .deb packages available in apt repositories are no longer maintained by the Certbot project and ship outdated versions.">
+Table of Contents# Installing ACME Clients Account Registration Configuring Auto-Renewal via Systemd Log Management Installing ACME Clients# Certbot Note: Certbot’s actively maintained distribution is via Snap. The .deb packages available in apt repositories are no longer maintained by the Certbot project and ship outdated versions.">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:modified_time" content="2026-04-12T20:08:41-05:00">
@@ -28,11 +28,11 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
   <meta itemprop="name" content="ACME Clients">
   <meta itemprop="description" content="ACME Clients# This guide covers installation and system-level configuration of ACME clients for use with acme-proxy. It is intended for system administrators deploying certificate automation on behalf of end users.
 For certificate issuance commands and per-scenario usage, see user.md.
-Table of Contents# Installing ACME Clients Account Registration Configuring Auto-Renewal via Systemd Log Management Installing ACME Clients# Certbot# Note: Certbot’s actively maintained distribution is via Snap. The .deb packages available in apt repositories are no longer maintained by the Certbot project and ship outdated versions.">
+Table of Contents# Installing ACME Clients Account Registration Configuring Auto-Renewal via Systemd Log Management Installing ACME Clients# Certbot Note: Certbot’s actively maintained distribution is via Snap. The .deb packages available in apt repositories are no longer maintained by the Certbot project and ship outdated versions.">
   <meta itemprop="dateModified" content="2026-04-12T20:08:41-05:00">
-  <meta itemprop="wordCount" content="843">
+  <meta itemprop="wordCount" content="844">
 
-<title>ACME Clients | ACME Proxy</title>
+<title>ACME Clients | acme-proxy</title>
 <link rel="icon" href="/favicon.png" >
 <link rel="manifest" href="/manifest.json">
 <link rel="canonical" href="http://localhost:1313/client/">
@@ -40,7 +40,7 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.4c7b822b52c27e45dcc401576e8748248407109c1dbb914b25910930a668c107.js" integrity="sha256-THuCK1LCfkXcxAFXbodIJIQHEJwdu5FLJZEJMKZowQc=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.458eb6e181c2860af69aa9d544e2c0b9b1659497b5e1d07e925131a549e0be98.js" integrity="sha256-RY624YHChgr2mqnVROLAubFllJe14dB&#43;klExpUngvpg=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -86,7 +86,7 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
     
   <nav>
 <h2 class="book-brand">
-  <a class="flex align-center" href="/"><span>ACME Proxy</span>
+  <a class="flex align-center" href="/"><span>acme-proxy</span>
   </a>
 </h2>
 
@@ -147,8 +147,6 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
       
     
       
-    
-      
         <li>
           
   
@@ -174,8 +172,6 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
   
 
         </li>
-      
-    
       
     
   </ul>
@@ -234,27 +230,9 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
     <li><a href="#acme-clients">ACME Clients</a>
       <ul>
         <li><a href="#table-of-contents">Table of Contents</a></li>
-        <li><a href="#installing-acme-clients">Installing ACME Clients</a>
-          <ul>
-            <li><a href="#certbot">Certbot</a></li>
-            <li><a href="#acmesh">acme.sh</a></li>
-            <li><a href="#lego">Lego</a></li>
-          </ul>
-        </li>
-        <li><a href="#account-registration">Account Registration</a>
-          <ul>
-            <li><a href="#certbot-1">Certbot</a></li>
-            <li><a href="#acmesh-1">acme.sh</a></li>
-            <li><a href="#lego-1">Lego</a></li>
-          </ul>
-        </li>
-        <li><a href="#configuring-auto-renewal-via-systemd">Configuring Auto-Renewal via Systemd</a>
-          <ul>
-            <li><a href="#certbot-2">Certbot</a></li>
-            <li><a href="#acmesh-2">acme.sh</a></li>
-            <li><a href="#lego-2">Lego</a></li>
-          </ul>
-        </li>
+        <li><a href="#installing-acme-clients">Installing ACME Clients</a></li>
+        <li><a href="#account-registration">Account Registration</a></li>
+        <li><a href="#configuring-auto-renewal-via-systemd">Configuring Auto-Renewal via Systemd</a></li>
         <li><a href="#log-management">Log Management</a></li>
       </ul>
     </li>
@@ -283,7 +261,8 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
 </ul>
 <hr>
 <h2 id="installing-acme-clients">Installing ACME Clients<a class="anchor" href="#installing-acme-clients">#</a></h2>
-<h3 id="certbot">Certbot<a class="anchor" href="#certbot">#</a></h3>
+<div class="book-tabs" >
+<input type="radio" class="toggle" name="tabs-0" id="tabs-0-0" checked="checked" /><label for="tabs-0-0">Certbot</label><div class="book-tabs-content markdown-inner">
 <blockquote class='book-hint '>
 <p><strong>Note:</strong> Certbot&rsquo;s actively maintained distribution is via Snap. The <code>.deb</code> packages available in apt repositories are no longer maintained by the Certbot project and ship outdated versions.</p>
 </blockquote><p>Install via Snap:</p>
@@ -293,8 +272,9 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo snap <span style="color:#ff5c57">set</span> certbot trust-plugin-with-root<span style="color:#ff6ac1">=</span>ok
 </span></span><span style="display:flex;"><span>sudo snap install certbot-nginx</span></span></code></pre></div><p>For the Apache plugin:</p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo snap <span style="color:#ff5c57">set</span> certbot trust-plugin-with-root<span style="color:#ff6ac1">=</span>ok
-</span></span><span style="display:flex;"><span>sudo snap install certbot-apache</span></span></code></pre></div><hr>
-<h3 id="acmesh">acme.sh<a class="anchor" href="#acmesh">#</a></h3>
+</span></span><span style="display:flex;"><span>sudo snap install certbot-apache</span></span></code></pre></div></div>
+
+<input type="radio" class="toggle" name="tabs-0" id="tabs-0-1"  /><label for="tabs-0-1">acme.sh</label><div class="book-tabs-content markdown-inner">
 <p><strong>Debian / Ubuntu:</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt-get update
 </span></span><span style="display:flex;"><span>sudo apt-get install -y acme.sh socat</span></span></code></pre></div><p><strong>RHEL / Rocky / AlmaLinux</strong> — requires EPEL:</p>
@@ -302,8 +282,9 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
 </span></span><span style="display:flex;"><span>sudo dnf install -y acme.sh socat</span></span></code></pre></div><p>The package installs the binary to <code>/usr/bin/acme.sh</code>. Use <code>/etc/acme.sh</code> as the configuration home for system-wide installations (passed via <code>--home</code> in all commands).</p>
 <blockquote class='book-hint '>
 <p><strong><code>socat</code> is required for standalone mode.</strong> acme.sh uses <code>socat</code> to bind port 80 for HTTP-01 challenges in standalone mode. It is installed above alongside acme.sh. This is not required if you use NGINX or Apache plugin mode.</p>
-</blockquote><hr>
-<h3 id="lego">Lego<a class="anchor" href="#lego">#</a></h3>
+</blockquote></div>
+
+<input type="radio" class="toggle" name="tabs-0" id="tabs-0-2"  /><label for="tabs-0-2">Lego</label><div class="book-tabs-content markdown-inner">
 <p>Lego has no official packages in major Linux distribution repositories. Install the release binary directly:</p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#ff5c57">LEGO_VERSION</span><span style="color:#ff6ac1">=</span>4.33.0
 </span></span><span style="display:flex;"><span>curl -fsSL <span style="color:#5af78e">&#34;https://github.com/go-acme/lego/releases/download/v</span><span style="color:#5af78e">${</span><span style="color:#ff5c57">LEGO_VERSION</span><span style="color:#5af78e">}</span><span style="color:#5af78e">/lego_v</span><span style="color:#5af78e">${</span><span style="color:#ff5c57">LEGO_VERSION</span><span style="color:#5af78e">}</span><span style="color:#5af78e">_linux_amd64.tar.gz&#34;</span> <span style="color:#5af78e">\
@@ -312,17 +293,26 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
 </span></span><span style="display:flex;"><span>rm lego
 </span></span><span style="display:flex;"><span>lego --version</span></span></code></pre></div><blockquote class='book-hint '>
 <p>Verify the checksum from the <a href="https://github.com/go-acme/lego/releases">GitHub releases page</a> before deploying to production. Pin <code>LEGO_VERSION</code> in your configuration management tool and treat upgrades as a deliberate change.</p>
-</blockquote><hr>
+</blockquote></div>
+</div>
+<hr>
 <h2 id="account-registration">Account Registration<a class="anchor" href="#account-registration">#</a></h2>
 <p>Each ACME client must register an account with acme-proxy before any certificates can be issued. This is a one-time step per host.</p>
-<h3 id="certbot-1">Certbot<a class="anchor" href="#certbot-1">#</a></h3>
+<div class="book-tabs" >
+<input type="radio" class="toggle" name="tabs-1" id="tabs-1-0" checked="checked" /><label for="tabs-1-0">Certbot</label><div class="book-tabs-content markdown-inner">
 <p>Certbot registers automatically on first use. No separate registration step is required.</p>
-<h3 id="acmesh-1">acme.sh<a class="anchor" href="#acmesh-1">#</a></h3>
+</div>
+
+<input type="radio" class="toggle" name="tabs-1" id="tabs-1-1"  /><label for="tabs-1-1">acme.sh</label><div class="book-tabs-content markdown-inner">
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo acme.sh --register-account <span style="color:#5af78e">\
 </span></span></span><span style="display:flex;"><span>  --server https://acme-proxy.example.com/acme/acme/directory <span style="color:#5af78e">\
 </span></span></span><span style="display:flex;"><span>  --email admin@example.com <span style="color:#5af78e">\
-</span></span></span><span style="display:flex;"><span>  --home /etc/acme.sh</span></span></code></pre></div><h3 id="lego-1">Lego<a class="anchor" href="#lego-1">#</a></h3>
+</span></span></span><span style="display:flex;"><span>  --home /etc/acme.sh</span></span></code></pre></div></div>
+
+<input type="radio" class="toggle" name="tabs-1" id="tabs-1-2"  /><label for="tabs-1-2">Lego</label><div class="book-tabs-content markdown-inner">
 <p>Lego registers automatically on the first <code>run</code> invocation. No separate registration step is required.</p>
+</div>
+</div>
 <hr>
 <h2 id="configuring-auto-renewal-via-systemd">Configuring Auto-Renewal via Systemd<a class="anchor" href="#configuring-auto-renewal-via-systemd">#</a></h2>
 <p>Replacing cron-based renewal with systemd timers provides:</p>
@@ -332,8 +322,8 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
 <li>Visibility via <code>systemctl list-timers</code>.</li>
 </ul>
 <p>All service units below set <code>SyslogIdentifier</code> so logs can be filtered by tag regardless of which syslog daemon is in use.</p>
-<hr>
-<h3 id="certbot-2">Certbot<a class="anchor" href="#certbot-2">#</a></h3>
+<div class="book-tabs" >
+<input type="radio" class="toggle" name="tabs-2" id="tabs-2-0" checked="checked" /><label for="tabs-2-0">Certbot</label><div class="book-tabs-content markdown-inner">
 <p>The Snap-installed certbot ships <code>certbot.timer</code> and <code>certbot.service</code> units automatically. Enable the timer and confirm it is active:</p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl <span style="color:#ff5c57">enable</span> --now certbot.timer
 </span></span><span style="display:flex;"><span>systemctl status certbot.timer</span></span></code></pre></div><p><strong>Configure the SyslogIdentifier</strong> so certbot&rsquo;s renewal logs are tagged consistently alongside other ACME clients:</p>
@@ -345,8 +335,9 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
 </span></span></span><span style="display:flex;"><span><span style="color:#5af78e">SyslogIdentifier=certbot-renewal
 </span></span></span><span style="display:flex;"><span><span style="color:#5af78e">EOF</span>
 </span></span><span style="display:flex;"><span>sudo systemctl daemon-reload</span></span></code></pre></div><p><strong>Test renewal without issuing:</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo certbot renew --dry-run</span></span></code></pre></div><hr>
-<h3 id="acmesh-2">acme.sh<a class="anchor" href="#acmesh-2">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo certbot renew --dry-run</span></span></code></pre></div></div>
+
+<input type="radio" class="toggle" name="tabs-2" id="tabs-2-1"  /><label for="tabs-2-1">acme.sh</label><div class="book-tabs-content markdown-inner">
 <p>acme.sh&rsquo;s <code>--cron</code> flag iterates over all configured certificates and renews those expiring within 30 days. A single service and timer unit covers all certificates on the host.</p>
 <p><strong>Create the service unit:</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo tee /etc/systemd/system/acme-renewal.service <span style="color:#5af78e">&lt;&lt;&#39;EOF&#39;
@@ -378,8 +369,9 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl daemon-reload
 </span></span><span style="display:flex;"><span>sudo systemctl <span style="color:#ff5c57">enable</span> --now acme-renewal.timer</span></span></code></pre></div><p><strong>Verify:</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl status acme-renewal.timer
-</span></span><span style="display:flex;"><span>systemctl list-timers acme-renewal.timer</span></span></code></pre></div><hr>
-<h3 id="lego-2">Lego<a class="anchor" href="#lego-2">#</a></h3>
+</span></span><span style="display:flex;"><span>systemctl list-timers acme-renewal.timer</span></span></code></pre></div></div>
+
+<input type="radio" class="toggle" name="tabs-2" id="tabs-2-2"  /><label for="tabs-2-2">Lego</label><div class="book-tabs-content markdown-inner">
 <p>Lego has no built-in renewal scheduling. Create service and timer units manually.</p>
 <p>Unlike acme.sh and certbot, lego&rsquo;s <code>renew</code> command targets one domain at a time. If you manage multiple certificates, use a wrapper script.</p>
 <p><strong>Wrapper script for multiple certificates:</strong></p>
@@ -437,7 +429,9 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo systemctl daemon-reload
 </span></span><span style="display:flex;"><span>sudo systemctl <span style="color:#ff5c57">enable</span> --now lego-renewal.timer</span></span></code></pre></div><p><strong>Verify:</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemctl status lego-renewal.timer
-</span></span><span style="display:flex;"><span>systemctl list-timers lego-renewal.timer</span></span></code></pre></div><hr>
+</span></span><span style="display:flex;"><span>systemctl list-timers lego-renewal.timer</span></span></code></pre></div></div>
+</div>
+<hr>
 <h2 id="log-management">Log Management<a class="anchor" href="#log-management">#</a></h2>
 <p>All service units above write to the systemd journal with a unique <code>SyslogIdentifier</code>. Logs are accessible via <code>journalctl</code> and forwarded to syslog if your system runs rsyslog or syslog-ng with journal forwarding enabled.</p>
 <p><strong>Filter renewal logs by client:</strong></p>
@@ -553,27 +547,9 @@ Table of Contents# Installing ACME Clients Account Registration Configuring Auto
     <li><a href="#acme-clients">ACME Clients</a>
       <ul>
         <li><a href="#table-of-contents">Table of Contents</a></li>
-        <li><a href="#installing-acme-clients">Installing ACME Clients</a>
-          <ul>
-            <li><a href="#certbot">Certbot</a></li>
-            <li><a href="#acmesh">acme.sh</a></li>
-            <li><a href="#lego">Lego</a></li>
-          </ul>
-        </li>
-        <li><a href="#account-registration">Account Registration</a>
-          <ul>
-            <li><a href="#certbot-1">Certbot</a></li>
-            <li><a href="#acmesh-1">acme.sh</a></li>
-            <li><a href="#lego-1">Lego</a></li>
-          </ul>
-        </li>
-        <li><a href="#configuring-auto-renewal-via-systemd">Configuring Auto-Renewal via Systemd</a>
-          <ul>
-            <li><a href="#certbot-2">Certbot</a></li>
-            <li><a href="#acmesh-2">acme.sh</a></li>
-            <li><a href="#lego-2">Lego</a></li>
-          </ul>
-        </li>
+        <li><a href="#installing-acme-clients">Installing ACME Clients</a></li>
+        <li><a href="#account-registration">Account Registration</a></li>
+        <li><a href="#configuring-auto-renewal-via-systemd">Configuring Auto-Renewal via Systemd</a></li>
         <li><a href="#log-management">Log Management</a></li>
       </ul>
     </li>

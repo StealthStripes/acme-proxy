@@ -174,6 +174,6 @@ openssl x509 \
 
 ## Next Steps
 
-- **Set up ACME clients system-wide with auto-renewal** — [Admin Guide](admin.md)
+- **Set up ACME clients system-wide with auto-renewal** — [Client Guide](client.md)
 - **Issue certificates for NGINX, Apache, Docker workloads** — [User Guide](user.md)
 - **Alternative install methods** (binary, source, Docker, full config reference) — [Install](install.md)

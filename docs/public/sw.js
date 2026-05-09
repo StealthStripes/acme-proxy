@@ -2,17 +2,15 @@ const cacheName = self.location.pathname
 const pages = [
 
   "/quickstart/",
-  "/install/",
-  "/troubleshoot/",
-  "/user/",
-  "/client/",
-  "/firewall/",
-  "/",
-  "/categories/",
-  "/tags/",
-  "/book.min.4d6d5ad3b0ae85d2a15b20ab217863f70db543e46314629e239ced759e674898.css",
-  "/en.search-data.min.0386fa07ad3ad6c84c365e20597b97291a94d042e64eeb3527e16537bd9127ab.json",
-  "/en.search.min.4c7b822b52c27e45dcc401576e8748248407109c1dbb914b25910930a668c107.js",
+    "/install/",
+    "/user/",
+    "/client/",
+    "/",
+    "/categories/",
+    "/tags/",
+    "/book.min.4d6d5ad3b0ae85d2a15b20ab217863f70db543e46314629e239ced759e674898.css",
+  "/en.search-data.min.560232984224282c27078d65b4572bf7282802ee88568cbaf35c061d4a55747f.json",
+  "/en.search.min.458eb6e181c2860af69aa9d544e2c0b9b1659497b5e1d07e925131a549e0be98.js",
   
 ];
 

@@ -1,6 +1,6 @@
 {
-  "name": "ACME Proxy",
-  "short_name": "ACME Proxy",
+  "name": "acme-proxy",
+  "short_name": "acme-proxy",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

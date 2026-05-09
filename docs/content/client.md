@@ -23,8 +23,8 @@ For certificate issuance commands and per-scenario usage, see [user.md](./user.m
 
 ## Installing ACME Clients
 
-### Certbot
-
+{{< tabs >}}
+{{% tab "Certbot" %}}
 > **Note:** Certbot's actively maintained distribution is via Snap. The `.deb` packages available in apt repositories are no longer maintained by the Certbot project and ship outdated versions.
 
 Install via Snap:
@@ -49,11 +49,9 @@ For the Apache plugin:
 sudo snap set certbot trust-plugin-with-root=ok
 sudo snap install certbot-apache
 ```
+{{% /tab %}}
 
----
-
-### acme.sh
-
+{{% tab "acme.sh" %}}
 **Debian / Ubuntu:**
 
 ```bash
@@ -71,11 +69,9 @@ sudo dnf install -y acme.sh socat
 The package installs the binary to `/usr/bin/acme.sh`. Use `/etc/acme.sh` as the configuration home for system-wide installations (passed via `--home` in all commands).
 
 > **`socat` is required for standalone mode.** acme.sh uses `socat` to bind port 80 for HTTP-01 challenges in standalone mode. It is installed above alongside acme.sh. This is not required if you use NGINX or Apache plugin mode.
+{{% /tab %}}
 
----
-
-### Lego
-
+{{% tab "Lego" %}}
 Lego has no official packages in major Linux distribution repositories. Install the release binary directly:
 
 ```bash
@@ -88,6 +84,8 @@ lego --version
 ```
 
 > Verify the checksum from the [GitHub releases page](https://github.com/go-acme/lego/releases) before deploying to production. Pin `LEGO_VERSION` in your configuration management tool and treat upgrades as a deliberate change.
+{{% /tab %}}
+{{< /tabs >}}
 
 ---
 
@@ -95,22 +93,24 @@ lego --version
 
 Each ACME client must register an account with acme-proxy before any certificates can be issued. This is a one-time step per host.
 
-### Certbot
-
+{{< tabs >}}
+{{% tab "Certbot" %}}
 Certbot registers automatically on first use. No separate registration step is required.
+{{% /tab %}}
 
-### acme.sh
-
+{{% tab "acme.sh" %}}
 ```bash
 sudo acme.sh --register-account \
   --server https://acme-proxy.example.com/acme/acme/directory \
   --email admin@example.com \
   --home /etc/acme.sh
 ```
+{{% /tab %}}
 
-### Lego
-
+{{% tab "Lego" %}}
 Lego registers automatically on the first `run` invocation. No separate registration step is required.
+{{% /tab %}}
+{{< /tabs >}}
 
 ---
 
@@ -124,10 +124,8 @@ Replacing cron-based renewal with systemd timers provides:
 
 All service units below set `SyslogIdentifier` so logs can be filtered by tag regardless of which syslog daemon is in use.
 
----
-
-### Certbot
-
+{{< tabs >}}
+{{% tab "Certbot" %}}
 The Snap-installed certbot ships `certbot.timer` and `certbot.service` units automatically. Enable the timer and confirm it is active:
 
 ```bash
@@ -153,11 +151,9 @@ sudo systemctl daemon-reload
 ```bash
 sudo certbot renew --dry-run
 ```
+{{% /tab %}}
 
----
-
-### acme.sh
-
+{{% tab "acme.sh" %}}
 acme.sh's `--cron` flag iterates over all configured certificates and renews those expiring within 30 days. A single service and timer unit covers all certificates on the host.
 
 **Create the service unit:**
@@ -209,11 +205,9 @@ sudo systemctl enable --now acme-renewal.timer
 systemctl status acme-renewal.timer
 systemctl list-timers acme-renewal.timer
 ```
+{{% /tab %}}
 
----
-
-### Lego
-
+{{% tab "Lego" %}}
 Lego has no built-in renewal scheduling. Create service and timer units manually.
 
 Unlike acme.sh and certbot, lego's `renew` command targets one domain at a time. If you manage multiple certificates, use a wrapper script.
@@ -297,6 +291,8 @@ sudo systemctl enable --now lego-renewal.timer
 systemctl status lego-renewal.timer
 systemctl list-timers lego-renewal.timer
 ```
+{{% /tab %}}
+{{< /tabs >}}
 
 ---
 

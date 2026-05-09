@@ -22,7 +22,7 @@ Replace `acme-proxy.example.com` with your organization's actual acme-proxy host
 
 - [1. NGINX on Linux VM / Baremetal](#1-nginx-on-linux-vm--baremetal)
 - [2. Apache on Linux VM / Baremetal](#2-apache-on-linux-vm--baremetal)
-- [3. Standalone Mode](#3-standalone-mode-databases-redis-kafka-etc)
+- [3. Standalone Mode (Databases, Redis, Kafka etc.)](#3-standalone-mode-databases-redis-kafka-etc)
 - [4. Docker and Docker Compose](#4-docker-and-docker-compose)
 - [5. Kubernetes (cert-manager)](#5-kubernetes-cert-manager)
 
@@ -30,7 +30,7 @@ Replace `acme-proxy.example.com` with your organization's actual acme-proxy host
 
 ## Prerequisites
 
-- The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See [admin.md](./admin.md) for installation instructions and systemd renewal timer setup.
+- The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See [client.md](./client.md) for installation instructions and systemd renewal timer setup.
 - Port 80 must be reachable from the acme-proxy server (used for HTTP-01 challenge validation).
 - Your domain's DNS must resolve to the host where the ACME client runs.
 - Replace the following placeholders throughout this guide:
@@ -42,8 +42,8 @@ Replace `acme-proxy.example.com` with your organization's actual acme-proxy host
 
 ## 1. NGINX on Linux VM / Baremetal
 
-### 1a. acme.sh
-
+{{< tabs >}}
+{{% tab "acme.sh" %}}
 **Register and issue a certificate (single domain):**
 
 ```bash
@@ -78,12 +78,10 @@ acme.sh --install-cert -d myserver.example.com \
   --reloadcmd     "systemctl reload nginx"
 ```
 
-**Auto-renewal:** The systemd timer configured in [admin.md](./admin.md) drives renewal. acme.sh executes the `--reloadcmd` above after each successful renewal.
+**Auto-renewal:** The systemd timer configured in [client.md](./client.md) drives renewal. acme.sh executes the `--reloadcmd` above after each successful renewal.
+{{% /tab %}}
 
----
-
-### 1b. Certbot
-
+{{% tab "Certbot" %}}
 **Register and issue a certificate (single domain):**
 
 ```bash
@@ -108,12 +106,10 @@ sudo certbot --nginx \
   -d api.myserver.example.com
 ```
 
-**Auto-renewal:** Managed by the certbot systemd timer. See [admin.md](./admin.md) for timer setup and log configuration.
+**Auto-renewal:** Managed by the certbot systemd timer. See [client.md](./client.md) for timer setup and log configuration.
+{{% /tab %}}
 
----
-
-### 1c. Lego
-
+{{% tab "Lego" %}}
 Lego uses webroot mode with NGINX — the ACME challenge files are written to NGINX's document root and served over port 80.
 
 **Ensure NGINX serves the challenge path** — add this to your NGINX server block if not already present:
@@ -161,14 +157,16 @@ ssl_certificate     /root/.lego/certificates/myserver.example.com.crt;
 ssl_certificate_key /root/.lego/certificates/myserver.example.com.key;
 ```
 
-**Auto-renewal:** Managed by the systemd timer configured in [admin.md](./admin.md). Ask your admin to add `--renew-hook 'systemctl reload nginx'` to the lego renewal script for this domain.
+**Auto-renewal:** Managed by the systemd timer configured in [client.md](./client.md). Ask your admin to add `--renew-hook 'systemctl reload nginx'` to the lego renewal script for this domain.
+{{% /tab %}}
+{{< /tabs >}}
 
 ---
 
 ## 2. Apache on Linux VM / Baremetal
 
-### 2a. acme.sh
-
+{{< tabs >}}
+{{% tab "acme.sh" %}}
 **Register and issue a certificate (single domain):**
 
 ```bash
@@ -205,12 +203,10 @@ acme.sh --install-cert -d myserver.example.com \
 
 > On RHEL-based systems use `httpd` instead of `apache2`.
 
-**Auto-renewal:** The systemd timer configured in [admin.md](./admin.md) drives renewal. acme.sh executes the `--reloadcmd` above after each successful renewal.
+**Auto-renewal:** The systemd timer configured in [client.md](./client.md) drives renewal. acme.sh executes the `--reloadcmd` above after each successful renewal.
+{{% /tab %}}
 
----
-
-### 2b. Certbot
-
+{{% tab "Certbot" %}}
 **Register and issue a certificate (single domain):**
 
 ```bash
@@ -235,12 +231,10 @@ sudo certbot --apache \
   -d api.myserver.example.com
 ```
 
-**Auto-renewal:** Managed by the certbot systemd timer. See [admin.md](./admin.md) for timer setup and log configuration.
+**Auto-renewal:** Managed by the certbot systemd timer. See [client.md](./client.md) for timer setup and log configuration.
+{{% /tab %}}
 
----
-
-### 2c. Lego
-
+{{% tab "Lego" %}}
 Ensure Apache serves the challenge path. Add this to your VirtualHost configuration:
 
 ```apache
@@ -287,7 +281,9 @@ SSLCertificateFile    /root/.lego/certificates/myserver.example.com.crt
 SSLCertificateKeyFile /root/.lego/certificates/myserver.example.com.key
 ```
 
-**Auto-renewal:** Managed by the systemd timer configured in [admin.md](./admin.md). Ask your admin to add `--renew-hook 'systemctl reload apache2'` (or `httpd` on RHEL-based systems) to the lego renewal script for this domain.
+**Auto-renewal:** Managed by the systemd timer configured in [client.md](./client.md). Ask your admin to add `--renew-hook 'systemctl reload apache2'` (or `httpd` on RHEL-based systems) to the lego renewal script for this domain.
+{{% /tab %}}
+{{< /tabs >}}
 
 ---
 
@@ -295,17 +291,19 @@ SSLCertificateKeyFile /root/.lego/certificates/myserver.example.com.key
 
 Standalone mode runs a temporary HTTP server on port 80 to answer the ACME challenge. Use this when there is no existing web server — typical for backend services such as Databases, Redis, Kafka, etc.
 
-> Port 80 must be temporarily available on the host. If IPtables or network firewall is in place, they must allow incoming http traffic from acme-proxy to the host.
+> [!IMPORTANT]
+> **Important**  
+Port 80 must be temporarily available on the host. If IPtables or network firewall is in place, they must allow incoming http traffic from acme-proxy to the host. See [Connectivity Requirements](_index.md/#connectivity-requirements)
 
-### 3a. acme.sh
-
+{{< tabs >}}
+{{% tab "acme.sh" %}}
 > acme.sh's standalone mode requires `socat`. The deb/rpm package may not install it on all distributions. Verify it is present before proceeding:
 >
 > ```bash
 > socat -V 2>/dev/null || echo "socat not found — install with: apt-get install socat / dnf install socat"
 > ```
 >
-> Certbot and lego (sections 3b and 3c) use their own built-in HTTP servers and do not require socat.
+> Certbot and lego use their own built-in HTTP servers and do not require socat.
 
 **Register and issue a certificate (single domain):**
 
@@ -340,12 +338,10 @@ acme.sh --install-cert -d myserver.example.com \
   --reloadcmd      "systemctl reload <your-service>"
 ```
 
-**Auto-renewal:** The systemd timer configured in [admin.md](./admin.md) drives renewal. During each renewal attempt, acme.sh will again bind port 80 briefly — ensure no other process occupies it at the scheduled renewal time.
+**Auto-renewal:** The systemd timer configured in [client.md](./client.md) drives renewal. During each renewal attempt, acme.sh will again bind port 80 briefly — ensure no other process occupies it at the scheduled renewal time.
+{{% /tab %}}
 
----
-
-### 3b. Certbot
-
+{{% tab "Certbot" %}}
 **Register and issue a certificate (single domain):**
 
 ```bash
@@ -375,7 +371,7 @@ Certificates are stored in `/etc/letsencrypt/live/myserver.example.com/`.
 
 **Configure your service** to load certificates from:
 
-```
+```text
 /etc/letsencrypt/live/myserver.example.com/fullchain.pem
 /etc/letsencrypt/live/myserver.example.com/privkey.pem
 ```
@@ -391,12 +387,10 @@ EOF
 sudo chmod +x /etc/letsencrypt/renewal-hooks/deploy/reload-service.sh
 ```
 
-Certbot executes this script after each successful renewal. The systemd timer that triggers renewal is configured in [admin.md](./admin.md).
+Certbot executes this script after each successful renewal. The systemd timer that triggers renewal is configured in [client.md](./client.md).
+{{% /tab %}}
 
----
-
-### 3c. Lego
-
+{{% tab "Lego" %}}
 **Issue a certificate (single domain):**
 
 ```bash
@@ -424,7 +418,9 @@ lego \
 
 Certificates are saved to `~/.lego/certificates/`.
 
-**Auto-renewal:** Managed by the systemd timer configured in [admin.md](./admin.md). Ask your admin to add `--renew-hook 'systemctl reload <your-service>'` to the lego renewal script for this domain.
+**Auto-renewal:** Managed by the systemd timer configured in [client.md](./client.md). Ask your admin to add `--renew-hook 'systemctl reload <your-service>'` to the lego renewal script for this domain.
+{{% /tab %}}
+{{< /tabs >}}
 
 ---
 
@@ -432,7 +428,7 @@ Certificates are saved to `~/.lego/certificates/`.
 
 This section covers the pattern for services already running as Docker containers or Docker Compose stacks. The ACME client runs on the **host** — not inside a container. Certificates are stored on the host filesystem and projected into running containers as read-only volume mounts. After renewal, the host-side renewal hook signals the affected containers to reload or restart.
 
-```
+```text
 Host ACME client  →  /etc/ssl/acme/<domain>/  →  volume mount  →  container
        ↓
   renewal hook  →  docker compose exec / docker compose restart
@@ -508,7 +504,8 @@ Configure your application to load the TLS certificate from `/etc/ssl/app/` insi
 
 After each renewal, the certificate files on the host are updated. The container must either reload its TLS configuration or restart to pick them up. Configure the appropriate hook for each ACME client.
 
-#### acme.sh
+{{< tabs >}}
+{{% tab "acme.sh" %}}
 
 ```bash
 acme.sh --install-cert -d myserver.example.com \
@@ -532,7 +529,9 @@ export Le_PostHook="docker compose -f /path/to/docker-compose.yml start myapp"
 acme.sh --renew -d myserver.example.com
 ```
 
-#### Certbot
+{{% /tab %}}
+
+{{% tab "Certbot" %}}
 
 Create a deploy hook script that restarts the container after renewal:
 
@@ -567,7 +566,9 @@ Enable the systemd timer as usual:
 sudo systemctl enable --now certbot.timer
 ```
 
-#### Lego
+{{% /tab %}}
+
+{{% tab "Lego" %}}
 
 Use `--renew-hook` to restart the container after each successful renewal. Wrap the stop/start around the `renew` call in your cron entry:
 
@@ -586,6 +587,9 @@ sudo tee /etc/cron.d/lego-docker-renewal <<'EOF'
 EOF
 ```
 
+{{% /tab %}}
+{{< /tabs >}}
+
 ---
 
 ## 5. Kubernetes (cert-manager)
@@ -601,7 +605,7 @@ cert-manager is a Kubernetes-native certificate controller that speaks ACME nati
 
 **Network requirement:** acme-proxy must be able to reach **port 80** on the cluster's Gateway. The domain must resolve to the Gateway's external IP.
 
-### Prerequisites
+### cert-manager Prerequisites
 
 - cert-manager v1.15+ — Gateway API support is enabled by default; earlier versions require `--feature-gates=ExperimentalGatewayAPISupport=true`
 - Gateway API CRDs installed (`gateway.networking.k8s.io/v1`)
@@ -681,7 +685,7 @@ kubectl get clusterissuer acme-proxy
 
 Expected output:
 
-```
+```text
 NAME         READY   AGE
 acme-proxy   True    30s
 ```
@@ -818,7 +822,7 @@ kubectl get secret myserver-tls \
 
 ---
 
-### Troubleshooting
+### Diagnosing Certificate Issues
 
 If the certificate stays in `False` or `Issuing` state, follow the cert-manager object chain — each level narrows down where the failure occurred:
 
@@ -835,7 +839,7 @@ kubectl describe challenge <name> -n default
 The `Challenge` object's status message identifies the exact failure:
 
 | Symptom | Likely cause |
-|---------|-------------|
+| ------- | ------------ |
 | `ClusterIssuer` not ready | acme-proxy unreachable from cert-manager pods; wrong ACME directory URL |
 | Challenge stays `pending` | acme-proxy cannot reach the Gateway on port 80; domain DNS not pointing at the Gateway's external IP |
 | Challenge `HTTPRoute` not attached | Gateway HTTP listener `allowedRoutes` does not include the namespace where the `Certificate` lives |
@@ -856,14 +860,15 @@ The three clients use different hook mechanisms.
 ### Hook phases
 
 | Phase | When it runs | Purpose |
-|-------|-------------|---------|
+| ----- | ------------ | ------- |
 | Pre-hook | Before the challenge attempt | Free port 80, drain connections |
 | Post-hook | After the challenge, regardless of outcome | Restore services stopped by pre-hook |
 | Deploy / renew hook | Only on successful issuance or renewal | Reload or restart the service using the certificate |
 
 ---
 
-### acme.sh
+{{< tabs >}}
+{{% tab "acme.sh" %}}
 
 acme.sh supports hooks via command-line flags or by setting environment variables that it persists in the per-domain config file (`~/.acme.sh/<domain>/<domain>.conf`).
 
@@ -896,14 +901,14 @@ acme.sh --renew -d myserver.example.com
 grep -E 'Le_PreHook|Le_PostHook|Le_ReloadCmd' ~/.acme.sh/myserver.example.com/myserver.example.com.conf
 ```
 
----
+{{% /tab %}}
 
-### Certbot
+{{% tab "Certbot" %}}
 
 Certbot uses a directory-based hook model. Any executable script placed in these directories runs for all certificates:
 
 | Directory | Phase |
-|-----------|-------|
+| --------- | ----- |
 | `/etc/letsencrypt/renewal-hooks/pre/` | Before challenge |
 | `/etc/letsencrypt/renewal-hooks/post/` | After challenge, regardless of outcome |
 | `/etc/letsencrypt/renewal-hooks/deploy/` | On successful renewal only |
@@ -956,9 +961,9 @@ sudo certbot renew \
   --deploy-hook "systemctl reload myapp"
 ```
 
----
+{{% /tab %}}
 
-### Lego
+{{% tab "Lego" %}}
 
 Lego supports hooks via `--run-hook` (runs after successful initial issuance) and `--renew-hook` (runs after successful renewal). There is no persistent hook state — you must pass hooks in every invocation or via a wrapper script.
 
@@ -1017,18 +1022,21 @@ sudo chmod 0700 /usr/local/sbin/lego-renew-myserver.sh
 Lego passes the following environment variables to hook scripts:
 
 | Variable | Value |
-|----------|-------|
+| -------- | ----- |
 | `LEGO_ACCOUNT_EMAIL` | Account email |
 | `LEGO_CERT_PATH` | Path to the certificate file |
 | `LEGO_CERT_KEY_PATH` | Path to the private key file |
 | `LEGO_CERT_DOMAIN` | Primary domain on the certificate |
+
+{{% /tab %}}
+{{< /tabs >}}
 
 ---
 
 ## Troubleshooting
 
 | Symptom | Likely cause | Fix |
-|---------|-------------|-----|
+| ------- | ------------ | --- |
 | `connection refused` on port 80 | Firewall blocking challenge traffic | Open port 80 from acme-proxy host |
 | `no route to host` to acme-proxy | DNS not resolving or network ACL | Confirm the proxy hostname resolves and port 443 is reachable |
 | Certificate issued but service won't reload | `--reloadcmd` / deploy hook misconfigured | Run the reload command manually; check service name |
