@@ -339,6 +339,14 @@ docker logs -f acme-proxy
 
 ```sh
 curl -s https://acmeproxy.example.com/acme/acme/directory | jq .
+
+{
+  "newNonce": "https://proxy.example.com/acme/acme/new-nonce",
+  "newAccount": "https://proxy.example.com/acme/acme/new-account",
+  "newOrder": "https://proxy.example.com/acme/acme/new-order",
+  "revokeCert": "https://proxy.example.com/acme/acme/revoke-cert",
+  "keyChange": "https://proxy.example.com/acme/acme/key-change"
+}
 ```
 
-A JSON object with `newNonce`, `newAccount`, `newOrder` keys confirms the server is running and accepting ACME requests.
+A JSON object with `newNonce`, `newAccount`, `newOrder` keys confirms the ACME server is running and accepting requests.

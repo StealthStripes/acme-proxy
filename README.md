@@ -35,24 +35,10 @@ This architecture addresses typical enterprise constraints that prevent direct c
 - Legacy DNS infrastructure lacks REST API support or ACME client integration
 - Security policies restrict distribution of API tokens or TSIG keys for large DNS zones
 
-For more information on DNS-01 security considerations:
+For more information on security considerations when using DNS-01 challenge:
 
 - [EFF: Technical Deep Dive on ACME DNS Challenge Validation](https://www.eff.org/deeplinks/2018/02/technical-deep-dive-securing-automation-acme-dns-challenge-validation)
 - [LetsEncrypt: DNS-01 Challenge](https://letsencrypt.org/docs/challenge-types/#dns-01-challenge)
-
-## Benefits
-
-Using ACME with commercial CAs in enterprise environments provides several advantages:
-
-**Trusted Certificates:**
-
-- Certificates are signed by publicly trusted CAs are already in system trust stores
-- Eliminates the operational burden of distributing and maintaining custom root certificates across endpoints, servers, and client devices
-
-**Automation and Self-Service:**
-
-- Leverage standard ACME clients (Certbot, acme.sh, cert-manager.io) for certificate issuance, automatic renewals.
-- Enable self-service certificate requests for development teams
 
 ## Quick Start
 
@@ -87,17 +73,6 @@ Requirements: Go >= 1.25
 ❯ cd acme-proxy && make
 ```
 
-### Using Docker
-
-You can either use our [pre-built container images](https://github.com/esnet/acme-proxy/pkgs/container/acme-proxy) or you can build the image yourself.
-
-**DIY - Build docker image**
-
-```sh
-❯ git clone https://github.com/esnet/acme-proxy.git
-❯ cd acme-proxy && docker build -t acme-proxy:latest .
-```
-
 ## Usage
 
 Review and update configuration options in [ca.json](./ca.json) before starting the acme-proxy server.
@@ -106,7 +81,7 @@ Review and update configuration options in [ca.json](./ca.json) before starting 
 vim ca.json
 ```
 
-The most important parts of the config are -
+Checkout our [official docs](https://software.es.net/acme-proxy/install/#configuration) for full set of configuration options. For quick start the most relevant config bits are:
 
 ```json
   "dnsNames": ["acmeproxy.example.com"],
@@ -121,7 +96,7 @@ The most important parts of the config are -
       "metrics": {
         "enabled": true,
         "port": 9234,
-        "dataSource": "db/metrics"
+        "dataSource": "/opt/acme-proxy/db/metrics"
       }
     },
   ...
@@ -168,41 +143,6 @@ badger 2025/07/15 22:12:24 INFO: Replay took: 5.99µs
 2025/07/15 22:12:33 Root certificates are available at https://acmeproxy.example.com:443/roots.pem
 2025/07/15 22:12:33 X.509 Root Fingerprint: a6cf64dbb4c8d5fd19ce48896068db03b533a8d1336c6256a87d00cbb3def3ea
 2025/07/15 22:12:33 Serving HTTPS on proxy.example.com:443 ...
-```
-
-When using acme-proxy with docker take a note of the bind mount and port
-
-```sh
-$ docker run -itd -p 443:443 -v ./ca-dev.json:/acme-proxy/config/ca.json --name acme-proxy acme-proxy:latest
-29c1ca374832dc50d3215b404f620c2a08d988c30f630464bf9d7d35aa44345f
-
-$ docker logs acme-proxy
-2026/03/17 23:04:06 Building new tls configuration using step-ca x509 Signer Interface
-2026/03/17 23:04:07 [INFO] acme: Registering account for certadmin@example.com
-2026/03/17 23:04:07 INFO processing certificate request domains=[proxy.example.com]
-2026/03/17 23:04:07 [INFO] [proxy.example.com] acme: Obtaining bundled SAN certificate given a CSR
-2026/03/17 23:04:08 [INFO] [proxy.example.com] AuthURL: https://acme.sectigo.com/v2/InCommonRSAOV/authz/jQJHRdd-0kKdm-JVQVhjHQ
-2026/03/17 23:04:08 [INFO] [proxy.example.com] acme: authorization already valid; skipping challenge
-2026/03/17 23:04:08 [INFO] [proxy.example.com] acme: Validations succeeded; requesting certificates
-2026/03/17 23:04:08 [INFO] Wait for certificate [timeout: 30s, interval: 500ms]
-2026/03/17 23:04:13 [INFO] [proxy.example.com] Server responded with a certificate.
-2026/03/17 23:04:13 INFO obtained certificate from external CA domains=[proxy.example.com]
-2026/03/17 23:04:13 Starting Smallstep CA/0000000-dev (linux/amd64)
-2026/03/17 23:04:13 Documentation: https://u.step.sm/docs/ca
-2026/03/17 23:04:13 Community Discord: https://u.step.sm/discord
-2026/03/17 23:04:13 Config file: /acme-proxy/config/ca.json
-2026/03/17 23:04:13 The primary server URL is https://proxy.example.com:443
-2026/03/17 23:04:13 Root certificates are available at https://proxy.example.com:443/roots.pem
-2026/03/17 23:04:13 Serving HTTPS on :443 ...
-
-$ curl -s https://proxy.example.com/acme/acme/directory | jq .
-{
-  "newNonce": "https://proxy.example.com/acme/acme/new-nonce",
-  "newAccount": "https://proxy.example.com/acme/acme/new-account",
-  "newOrder": "https://proxy.example.com/acme/acme/new-order",
-  "revokeCert": "https://proxy.example.com/acme/acme/revoke-cert",
-  "keyChange": "https://proxy.example.com/acme/acme/key-change"
-}
 ```
 
 ### Obtaining a certificate
@@ -287,11 +227,11 @@ Certificate:
 
 ```
 
-We have our certificate signed by InCommon 🎉
+We have our certificate signed by our certificate authority i.e InCommon 🎉
 
 ### Renewing a certificate
 
-Issuing a certificate is *generally* not a problem in enterprise environments. But the ability to reliably renew certificates and reload services gracefully post renewal is. I am using the `--force` flag for renewal only because the default configuration in ACME clients only performs automatic renewal `1 < N < 30` number of days before certificate expiration.
+Issuing a certificate is *generally* not a problem in enterprise environments. But the ability to automatically renew certificates and reload services gracefully post renewal is. I am using the `--force` flag for renewal only because the default configuration in ACME clients only performs automatic renewal `1 < N < 30` number of days before certificate expiration.
 
 ```sh
 $ ./acme.sh --renew --domain myserver.example.com --force
@@ -346,3 +286,17 @@ N+c9XyDLAiEAkbrRKBsYc8YSgYviREF9u+gz7jK5JY2dsaRatEfb8Eg=
 ```
 
 Cert renewal was a success! ✨
+
+## Benefits
+
+Using ACME with commercial CAs in enterprise environments provides several advantages:
+
+**Trusted Certificates:**
+
+- Certificates are signed by publicly trusted CAs are already in system trust stores
+- Eliminates the operational burden of distributing and maintaining custom root certificates across endpoints, servers, and client devices
+
+**Automation and Self-Service:**
+
+- Leverage standard ACME clients (Certbot, acme.sh, cert-manager.io) for certificate issuance, automatic renewals.
+- Enable self-service certificate requests for development teams
