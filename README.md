@@ -4,7 +4,7 @@
 
 ## Documentation
 
-Checkout our [documentation site](https://software.es.net/acme-proxy) for detailed examples on usage, installation instructions, configuration etc.
+Checkout our [documentation site](https://software.es.net/acme-proxy) for detailed examples on user guide, installation instructions, configuration etc.
 
 ## How It Works
 
@@ -44,6 +44,32 @@ For more information on security considerations when using DNS-01 challenge:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/esnet/acme-proxy/main/install.sh | sudo sh
+
+Installing binary to /opt/acme-proxy...
+Creating acme-proxy service user...
+Setting ownership of installation directory...
+Installing systemd service...
+Reloading systemd daemon...
+Enabling acme-proxy service...
+Created symlink /etc/systemd/system/multi-user.target.wants/acme-proxy.service → /etc/systemd/system/acme-proxy.service.
+
+Installation complete!
+
+Next steps:
+  1. Edit /opt/acme-proxy/ca.json and configure:
+     - dnsNames: Your ACME proxy hostname
+     - ca_url: Your upstream ACME CA URL
+     - account_email: Your account email
+     - eab_kid: External Account Binding Key ID
+     - eab_hmac_key: External Account Binding HMAC key
+
+  2. Start the service:
+     sudo systemctl start acme-proxy
+
+  3. Check status:
+     sudo systemctl status acme-proxy
+     sudo journalctl -u acme-proxy -f
+
 ```
 
 The script installs acme-proxy as a systemd service with sensible defaults, all of which can be overridden with environment variables:
@@ -57,23 +83,7 @@ SERVICE_USER="${SERVICE_USER:-acme-proxy}"
 SERVICE_GROUP="${SERVICE_GROUP:-acme-proxy}"
 ```
 
-**Example with custom install directory:**
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/esnet/acme-proxy/main/install.sh | \
-  sudo INSTALL_DIR=/usr/local/acme-proxy SERVICE_USER=acmeservice sh
-```
-
-### Build from source (optional)
-
-Requirements: Go >= 1.25
-
-```sh
-❯ git clone https://github.com/esnet/acme-proxy.git
-❯ cd acme-proxy && make
-```
-
-## Usage
+## Configure
 
 Review and update configuration options in [ca.json](./ca.json) before starting the acme-proxy server.
 
@@ -113,12 +123,19 @@ Most commercial certificate authorities (such as Sectigo) support certificate is
   "eab_hmac_key": "",
 ```
 
-### Starting the ACME server
+### Starting acme-proxy
 
-Upon starting the ACME server it automatically obtains a SSL/TLS certificate for itself.
+After configuring `ca.json` file simply start the systemd service
 
 ```sh
-$ ./step-ca ca.json
+sudo systemctl start acme-proxy
+```
+
+Upon starting acme-proxy it automatically obtains a SSL certificate for itself as part of bootstrapping. This certificate and it's private key are stored in memory and are automatically rotated using the EAB credentials provided in `ca.json`
+
+```sh
+$ sudo systemctl status acme-proxy
+
 badger 2025/07/15 22:12:24 INFO: All 1 tables opened in 0s
 badger 2025/07/15 22:12:24 INFO: Replaying file id: 0 at offset: 105133
 badger 2025/07/15 22:12:24 INFO: Replay took: 5.99µs
@@ -147,7 +164,7 @@ badger 2025/07/15 22:12:24 INFO: Replay took: 5.99µs
 
 ### Obtaining a certificate
 
-While the example below uses `acme.sh` as the ACME client, we've also tested using `certbot` with equal success.
+While the example below uses `acme.sh` as the ACME client in standalone mode, we've also tested using `certbot` and `cert-manager` on Kubernetes with equal success. For more examples see [user guide](https://software.es.net/acme-proxy/user/).
 
 ```sh
 $ ./acme.sh --issue \
@@ -228,64 +245,6 @@ Certificate:
 ```
 
 We have our certificate signed by our certificate authority i.e InCommon 🎉
-
-### Renewing a certificate
-
-Issuing a certificate is *generally* not a problem in enterprise environments. But the ability to automatically renew certificates and reload services gracefully post renewal is. I am using the `--force` flag for renewal only because the default configuration in ACME clients only performs automatic renewal `1 < N < 30` number of days before certificate expiration.
-
-```sh
-$ ./acme.sh --renew --domain myserver.example.com --force
-[Tue 15 Jul 22:50:37 CDT 2025] The domain 'myserver.example.com' seems to already have an ECC cert, let's use it.
-[Tue 15 Jul 22:50:37 CDT 2025] Renewing: 'myserver.example.com'
-[Tue 15 Jul 22:50:37 CDT 2025] Renewing using Le_API=https://acmeproxy.example.com/acme/acme/directory
-[Tue 15 Jul 22:50:38 CDT 2025] Using CA: https://acmeproxy.example.com/acme/acme/directory
-[Tue 15 Jul 22:50:38 CDT 2025] Standalone mode.
-[Tue 15 Jul 22:50:38 CDT 2025] Single domain='myserver.example.com'
-[Tue 15 Jul 22:50:38 CDT 2025] Getting webroot for domain='myserver.example.com'
-[Tue 15 Jul 22:50:38 CDT 2025] Verifying: myserver.example.com
-[Tue 15 Jul 22:50:38 CDT 2025] Standalone mode server
-[Tue 15 Jul 22:50:40 CDT 2025] Success
-[Tue 15 Jul 22:50:40 CDT 2025] Verification finished, beginning signing.
-[Tue 15 Jul 22:50:40 CDT 2025] Let's finalize the order.
-[Tue 15 Jul 22:50:40 CDT 2025] Le_OrderFinalize='https://acmeproxy.example.com/acme/acme/order/qImka7i2D609vh5gLrW6VOwGDoXtd0Mi/finalize'
-[Tue 15 Jul 22:50:47 CDT 2025] Downloading cert.
-[Tue 15 Jul 22:50:47 CDT 2025] Le_LinkCert='https://acmeproxy.example.com/acme/acme/certificate/f1Am3j0kYAKZa8pl8TXmxvPHoNiBTusU'
-[Tue 15 Jul 22:50:48 CDT 2025] Cert success.
------BEGIN CERTIFICATE-----
-MIIE1TCCBHugAwIBAgIQdNISA47bpyNGREPFAKQnljAKBggqhkjOPQQDAjBEMQsw
-CQYDVQQGEwJVUzESMBAGA1UEChMJSW50ZXJuZXQyMSEwHwYDVQQDExhJbkNvbW1v
-biBFQ0MgU2VydmVyIENBIDIwHhcNMjUwNzE2MDAwMDAwWhcNMjYwNzE2MjM1OTU5
-WjBpMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEgMB4GA1UEChMX
-RW5lcmd5IFNjaWVuY2VzIE5ldHdvcmsxIzAhBgNVBAMTGnNlYmFzdGlhbjEuYWNt
-ZS1kZXYuZXMubmV0MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEl+z2kyLu0aHy
-79D457pdQSzWNmqsxg83oz3QHgMoP3lwCGk6G461dvbwrAbC+GMAmmlJiWq6Kg6r
-3tHKkrJQ5aOCAygwggMkMB8GA1UdIwQYMBaAFDJfCtkYWe1BcSHV7gni2a+y1w+x
-MB0GA1UdDgQWBBRnH5X2pNXqYObRzzZgcRhlBH/YijAOBgNVHQ8BAf8EBAMCB4Aw
-DAYDVR0TAQH/BAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwSQYD
-VR0gBEIwQDA0BgsrBgEEAbIxAQICZzAlMCMGCCsGAQUFBwIBFhdodHRwczovL3Nl
-Y3RpZ28uY29tL0NQUzAIBgZngQwBAgIwQAYDVR0fBDkwNzA1oDOgMYYvaHR0cDov
-L2NybC5zZWN0aWdvLmNvbS9JbkNvbW1vbkVDQ1NlcnZlckNBMi5jcmwwcAYIKwYB
-BQUHAQEEZDBiMDsGCCsGAQUFBzAChi9odHRwOi8vY3J0LnNlY3RpZ28uY29tL0lu
-Q29tbW9uRUNDU2VydmVyQ0EyLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29jc3Au
-c2VjdGlnby5jb20wJQYDVR0RBB4wHIIac2ViYXN0aWFuMS5hY21lLWRldi5lcy5u
-ZXQwggF9BgorBgEEAdZ5AgQCBIIBbQSCAWkBZwB2ANgJVTuUT3r/yBYZb5RPhauw
-+Pxeh1UmDxXRLnK7RUsUAAABmBFbMBYAAAQDAEcwRQIhAIE0gbe7S4DVa0LE7cky
-iDkdmmYdfunYLXIunkgpQJzhAiAkMXHsPW6vD/eDOqbSEQ5ZEHMAedVQqXX93R7s
-yWlWnAB2AKyrMHBs6+yEMfQT0vSRXxEeQiRDsfKmjE88KzunHgLDAAABmBFbMAYA
-AAQDAEcwRQIgb89l1Uaxy6w2EcYXcL03GW6H7Za40nrCAqw5cNXCm3ICIQDte890
-mF6BYRZjG4pMNMeKxkACEd+qp5No+IomQDBtBwB1ANdtfRDRp/V3wsfpX9cAv/mC
-yTNaZeHQswFzF8DIxWl3AAABmBFbL6IAAAQDAEYwRAIgepFqZQ6sq/GeeSwW5xDI
-QceZj46e/GFc2REwnd5AwuoCIGzSbkCnAQ8lx9eaNFsuijDbVXlxG/euX6ak+xod
-bCJvMAoGCCqGSM49BAMCA0gAMEUCIHfnyfO8Hz5lM8RXRiZHN1HYqUn0CHwlP1CM
-N+c9XyDLAiEAkbrRKBsYc8YSgYviREF9u+gz7jK5JY2dsaRatEfb8Eg=
------END CERTIFICATE-----
-[Tue 15 Jul 22:50:48 CDT 2025] Your cert is in: /root/.acme.sh/myserver.example.com_ecc/myserver.example.com.cer
-[Tue 15 Jul 22:50:48 CDT 2025] Your cert key is in: /root/.acme.sh/myserver.example.com_ecc/myserver.example.com.key
-[Tue 15 Jul 22:50:48 CDT 2025] The intermediate CA cert is in: /root/.acme.sh/myserver.example.com_ecc/ca.cer
-[Tue 15 Jul 22:50:48 CDT 2025] And the full-chain cert is in: /root/.acme.sh/myserver.example.com_ecc/fullchain.cer
-```
-
-Cert renewal was a success! ✨
 
 ## Benefits
 
