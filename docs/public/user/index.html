@@ -11,7 +11,7 @@ https://github.com/alex-shpak/hugo-book
 <meta name="description" content="User Guide# This guide covers how to obtain and automatically renew TLS certificates from acme-proxy using three common ACME clients: acme.sh, Certbot, and Lego.
 ACME directory URL:
 https://acme-proxy.example.com/acme/acme/directoryReplace acme-proxy.example.com with your organization’s actual acme-proxy hostname.
-Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Baremetal 3. Standalone Mode (Databases, Redis, Kafka etc.) 4. Docker and Docker Compose 5. Kubernetes (cert-manager) Prerequisites# The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See client.md for installation instructions and systemd renewal timer setup. Port 80 must be reachable from the acme-proxy server (used for HTTP-01 challenge validation). Your domain’s DNS must resolve to the host where the ACME client runs. Replace the following placeholders throughout this guide: acme-proxy.example.com — your acme-proxy hostname myserver.example.com — the domain you want a certificate for admin@example.com — your contact email 1. NGINX on Linux VM / Baremetal# acme.sh Register and issue a certificate (single domain):
+Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Baremetal 3. Standalone Mode (Databases, Redis, Kafka etc.) 4. Docker and Docker Compose 5. Kubernetes (cert-manager) Prerequisites# The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See ACME clients page for installation instructions and systemd renewal timer setup. Port 80 must be reachable from the acme-proxy server (used for HTTP-01 challenge validation). Your domain’s DNS must resolve to the host where the ACME client runs. Replace the following placeholders throughout this guide: acme-proxy.example.com — your acme-proxy hostname myserver.example.com — the domain you want a certificate for admin@example.com — your contact email 1. NGINX on Linux VM / Baremetal# acme.sh Register and issue a certificate (single domain):
 ">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#2e3440">
@@ -21,19 +21,19 @@ Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Bare
   <meta property="og:description" content="User Guide# This guide covers how to obtain and automatically renew TLS certificates from acme-proxy using three common ACME clients: acme.sh, Certbot, and Lego.
 ACME directory URL:
 https://acme-proxy.example.com/acme/acme/directoryReplace acme-proxy.example.com with your organization’s actual acme-proxy hostname.
-Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Baremetal 3. Standalone Mode (Databases, Redis, Kafka etc.) 4. Docker and Docker Compose 5. Kubernetes (cert-manager) Prerequisites# The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See client.md for installation instructions and systemd renewal timer setup. Port 80 must be reachable from the acme-proxy server (used for HTTP-01 challenge validation). Your domain’s DNS must resolve to the host where the ACME client runs. Replace the following placeholders throughout this guide: acme-proxy.example.com — your acme-proxy hostname myserver.example.com — the domain you want a certificate for admin@example.com — your contact email 1. NGINX on Linux VM / Baremetal# acme.sh Register and issue a certificate (single domain):">
+Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Baremetal 3. Standalone Mode (Databases, Redis, Kafka etc.) 4. Docker and Docker Compose 5. Kubernetes (cert-manager) Prerequisites# The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See ACME clients page for installation instructions and systemd renewal timer setup. Port 80 must be reachable from the acme-proxy server (used for HTTP-01 challenge validation). Your domain’s DNS must resolve to the host where the ACME client runs. Replace the following placeholders throughout this guide: acme-proxy.example.com — your acme-proxy hostname myserver.example.com — the domain you want a certificate for admin@example.com — your contact email 1. NGINX on Linux VM / Baremetal# acme.sh Register and issue a certificate (single domain):">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
-    <meta property="article:modified_time" content="2026-04-16T20:13:17-05:00">
+    <meta property="article:modified_time" content="2026-05-09T16:30:55-05:00">
 
 
   <meta itemprop="name" content="User Guide">
   <meta itemprop="description" content="User Guide# This guide covers how to obtain and automatically renew TLS certificates from acme-proxy using three common ACME clients: acme.sh, Certbot, and Lego.
 ACME directory URL:
 https://acme-proxy.example.com/acme/acme/directoryReplace acme-proxy.example.com with your organization’s actual acme-proxy hostname.
-Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Baremetal 3. Standalone Mode (Databases, Redis, Kafka etc.) 4. Docker and Docker Compose 5. Kubernetes (cert-manager) Prerequisites# The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See client.md for installation instructions and systemd renewal timer setup. Port 80 must be reachable from the acme-proxy server (used for HTTP-01 challenge validation). Your domain’s DNS must resolve to the host where the ACME client runs. Replace the following placeholders throughout this guide: acme-proxy.example.com — your acme-proxy hostname myserver.example.com — the domain you want a certificate for admin@example.com — your contact email 1. NGINX on Linux VM / Baremetal# acme.sh Register and issue a certificate (single domain):">
-  <meta itemprop="dateModified" content="2026-04-16T20:13:17-05:00">
-  <meta itemprop="wordCount" content="3310">
+Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Baremetal 3. Standalone Mode (Databases, Redis, Kafka etc.) 4. Docker and Docker Compose 5. Kubernetes (cert-manager) Prerequisites# The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See ACME clients page for installation instructions and systemd renewal timer setup. Port 80 must be reachable from the acme-proxy server (used for HTTP-01 challenge validation). Your domain’s DNS must resolve to the host where the ACME client runs. Replace the following placeholders throughout this guide: acme-proxy.example.com — your acme-proxy hostname myserver.example.com — the domain you want a certificate for admin@example.com — your contact email 1. NGINX on Linux VM / Baremetal# acme.sh Register and issue a certificate (single domain):">
+  <meta itemprop="dateModified" content="2026-05-09T16:30:55-05:00">
+  <meta itemprop="wordCount" content="3312">
 
 <title>User Guide | acme-proxy</title>
 <link rel="icon" href="/favicon.png" >
@@ -43,7 +43,7 @@ Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Bare
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.458eb6e181c2860af69aa9d544e2c0b9b1659497b5e1d07e925131a549e0be98.js" integrity="sha256-RY624YHChgr2mqnVROLAubFllJe14dB&#43;klExpUngvpg=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.3b53a73b50c77a03ef9f852162dd865a1ef44c853558a2c64c8f675e48958950.js" integrity="sha256-O1OnO1DHegPvn4UhYt2GWh70TIU1WKLGTI9nXkiViVA=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -89,7 +89,7 @@ Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Bare
     
   <nav>
 <h2 class="book-brand">
-  <a class="flex align-center" href="/"><span>acme-proxy</span>
+  <a class="flex" style="flex-direction: column; align-items: flex-start;" href="/"><img src="/esnet-logo.png" alt="ESnet" style="height: 48px; width: auto;" /><span>acme-proxy</span>
   </a>
 </h2>
 
@@ -156,8 +156,8 @@ Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Bare
   
 
   
-    <a href="/user/" class="active">
-      User Guide</a>
+    <a href="/client/" class="">
+      ACME Clients</a>
   
 
         </li>
@@ -170,8 +170,8 @@ Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Bare
   
 
   
-    <a href="/client/" class="">
-      ACME Clients</a>
+    <a href="/user/" class="active">
+      User Guide</a>
   
 
         </li>
@@ -291,7 +291,7 @@ Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Bare
 <hr>
 <h2 id="prerequisites">Prerequisites<a class="anchor" href="#prerequisites">#</a></h2>
 <ul>
-<li>The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See <a href="/client/">client.md</a> for installation instructions and systemd renewal timer setup.</li>
+<li>The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See <a href="/client/">ACME clients</a> page for installation instructions and systemd renewal timer setup.</li>
 <li>Port 80 must be reachable from the acme-proxy server (used for HTTP-01 challenge validation).</li>
 <li>Your domain&rsquo;s DNS must resolve to the host where the ACME client runs.</li>
 <li>Replace the following placeholders throughout this guide:
@@ -1046,9 +1046,9 @@ Mount a host directory (e.g., <code>/var/www/acme-challenge</code>) into the con
   <div class="flex flex-wrap justify-between">
 
 <div>
-<a class="flex align-center" href="https://github.com/esnet/acme-proxy/commit/6a9d240ead99f034070b18adaa4415bb03f64132" title='Last modified by Kapil Agrawal | April 16, 2026' target="_blank" rel="noopener">
+<a class="flex align-center" href="https://github.com/esnet/acme-proxy/commit/3c01d2951d66782f2f5844ce2a052e01f59427b0" title='Last modified by Kapil Agrawal | May 9, 2026' target="_blank" rel="noopener">
     <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
-    <span>April 16, 2026</span>
+    <span>May 9, 2026</span>
   </a>
 
 </div>
@@ -1074,18 +1074,13 @@ Mount a host directory (e.g., <code>/var/www/acme-challenge</code>) into the con
   <div class="flex flex-wrap justify-between">
     <span>
     
-      <a href="/install/" class="flex align-center">
+      <a href="/client/" class="flex align-center">
         <img src="/icons/backward.svg" class="book-icon" alt="Backward" />
-        <span>Install</span>
+        <span>ACME Clients</span>
       </a>
     
     </span>
     <span>
-    
-      <a href="/client/" class="flex align-center">
-        <span>ACME Clients</span>
-        <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
-      </a>
     
     </span>
   </div>

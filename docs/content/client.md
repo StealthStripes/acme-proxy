@@ -1,6 +1,6 @@
 +++
 title = 'ACME Clients'
-weight = 40
+weight = 30
 BookToC = true
 +++
 
@@ -49,6 +49,7 @@ For the Apache plugin:
 sudo snap set certbot trust-plugin-with-root=ok
 sudo snap install certbot-apache
 ```
+
 {{% /tab %}}
 
 {{% tab "acme.sh" %}}
@@ -99,12 +100,14 @@ Certbot registers automatically on first use. No separate registration step is r
 {{% /tab %}}
 
 {{% tab "acme.sh" %}}
+
 ```bash
 sudo acme.sh --register-account \
   --server https://acme-proxy.example.com/acme/acme/directory \
   --email admin@example.com \
   --home /etc/acme.sh
 ```
+
 {{% /tab %}}
 
 {{% tab "Lego" %}}
@@ -151,6 +154,7 @@ sudo systemctl daemon-reload
 ```bash
 sudo certbot renew --dry-run
 ```
+
 {{% /tab %}}
 
 {{% tab "acme.sh" %}}
@@ -205,6 +209,7 @@ sudo systemctl enable --now acme-renewal.timer
 systemctl status acme-renewal.timer
 systemctl list-timers acme-renewal.timer
 ```
+
 {{% /tab %}}
 
 {{% tab "Lego" %}}
@@ -291,6 +296,7 @@ sudo systemctl enable --now lego-renewal.timer
 systemctl status lego-renewal.timer
 systemctl list-timers lego-renewal.timer
 ```
+
 {{% /tab %}}
 {{< /tabs >}}
 

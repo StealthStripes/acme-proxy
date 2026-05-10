@@ -1,6 +1,6 @@
 +++
 title = 'User Guide'
-weight = 30
+weight = 40
 BookToC = true
 +++
 
@@ -30,7 +30,7 @@ Replace `acme-proxy.example.com` with your organization's actual acme-proxy host
 
 ## Prerequisites
 
-- The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See [client.md](./client.md) for installation instructions and systemd renewal timer setup.
+- The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See [ACME clients](./client.md) page for installation instructions and systemd renewal timer setup.
 - Port 80 must be reachable from the acme-proxy server (used for HTTP-01 challenge validation).
 - Your domain's DNS must resolve to the host where the ACME client runs.
 - Replace the following placeholders throughout this guide:

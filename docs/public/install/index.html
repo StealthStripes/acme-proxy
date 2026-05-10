@@ -20,14 +20,14 @@ Method Best for Install script Standard Linux servers, systemd environments Pre-
 Method Best for Install script Standard Linux servers, systemd environments Pre-built binary Environments where curl-pipe-to-shell is prohibited Build from source Development, or architectures not covered by releases Docker Container-based deployments Install Script (Recommended)# The install script downloads the appropriate release binary, creates a dedicated service user, installs a ca.json template, and registers a hardened systemd service unit.">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
-    <meta property="article:modified_time" content="2026-04-12T20:08:41-05:00">
+    <meta property="article:modified_time" content="2026-05-09T16:31:07-05:00">
 
 
   <meta itemprop="name" content="Install">
   <meta itemprop="description" content="Install# Three methods are available. The install script is recommended for most deployments.
 Method Best for Install script Standard Linux servers, systemd environments Pre-built binary Environments where curl-pipe-to-shell is prohibited Build from source Development, or architectures not covered by releases Docker Container-based deployments Install Script (Recommended)# The install script downloads the appropriate release binary, creates a dedicated service user, installs a ca.json template, and registers a hardened systemd service unit.">
-  <meta itemprop="dateModified" content="2026-04-12T20:08:41-05:00">
-  <meta itemprop="wordCount" content="853">
+  <meta itemprop="dateModified" content="2026-05-09T16:31:07-05:00">
+  <meta itemprop="wordCount" content="865">
 
 <title>Install | acme-proxy</title>
 <link rel="icon" href="/favicon.png" >
@@ -37,7 +37,7 @@ Method Best for Install script Standard Linux servers, systemd environments Pre-
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.458eb6e181c2860af69aa9d544e2c0b9b1659497b5e1d07e925131a549e0be98.js" integrity="sha256-RY624YHChgr2mqnVROLAubFllJe14dB&#43;klExpUngvpg=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.3b53a73b50c77a03ef9f852162dd865a1ef44c853558a2c64c8f675e48958950.js" integrity="sha256-O1OnO1DHegPvn4UhYt2GWh70TIU1WKLGTI9nXkiViVA=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -83,7 +83,7 @@ Method Best for Install script Standard Linux servers, systemd environments Pre-
     
   <nav>
 <h2 class="book-brand">
-  <a class="flex align-center" href="/"><span>acme-proxy</span>
+  <a class="flex" style="flex-direction: column; align-items: flex-start;" href="/"><img src="/esnet-logo.png" alt="ESnet" style="height: 48px; width: auto;" /><span>acme-proxy</span>
   </a>
 </h2>
 
@@ -150,8 +150,8 @@ Method Best for Install script Standard Linux servers, systemd environments Pre-
   
 
   
-    <a href="/user/" class="">
-      User Guide</a>
+    <a href="/client/" class="">
+      ACME Clients</a>
   
 
         </li>
@@ -164,8 +164,8 @@ Method Best for Install script Standard Linux servers, systemd environments Pre-
   
 
   
-    <a href="/client/" class="">
-      ACME Clients</a>
+    <a href="/user/" class="">
+      User Guide</a>
   
 
         </li>
@@ -586,7 +586,15 @@ Serving HTTPS on :443 ...</code></pre><h3 id="running-manually-without-systemd">
 <div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>docker compose up -d
 </span></span><span style="display:flex;"><span>docker logs -f acme-proxy</span></span></code></pre></div><hr>
 <h2 id="verify">Verify<a class="anchor" href="#verify">#</a></h2>
-<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -s https://acmeproxy.example.com/acme/acme/directory | jq .</span></span></code></pre></div><p>A JSON object with <code>newNonce</code>, <code>newAccount</code>, <code>newOrder</code> keys confirms the server is running and accepting ACME requests.</p>
+<div class="highlight"><pre tabindex="0" style="color:#e2e4e5;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span>curl -s https://acmeproxy.example.com/acme/acme/directory | jq .
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#5af78e">&#34;newNonce&#34;</span>: <span style="color:#5af78e">&#34;https://proxy.example.com/acme/acme/new-nonce&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#5af78e">&#34;newAccount&#34;</span>: <span style="color:#5af78e">&#34;https://proxy.example.com/acme/acme/new-account&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#5af78e">&#34;newOrder&#34;</span>: <span style="color:#5af78e">&#34;https://proxy.example.com/acme/acme/new-order&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#5af78e">&#34;revokeCert&#34;</span>: <span style="color:#5af78e">&#34;https://proxy.example.com/acme/acme/revoke-cert&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#5af78e">&#34;keyChange&#34;</span>: <span style="color:#5af78e">&#34;https://proxy.example.com/acme/acme/key-change&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff6ac1">}</span></span></span></code></pre></div><p>A JSON object with <code>newNonce</code>, <code>newAccount</code>, <code>newOrder</code> keys confirms the ACME server is running and accepting requests.</p>
 </article>
  
       
@@ -596,9 +604,9 @@ Serving HTTPS on :443 ...</code></pre><h3 id="running-manually-without-systemd">
   <div class="flex flex-wrap justify-between">
 
 <div>
-<a class="flex align-center" href="https://github.com/esnet/acme-proxy/commit/bddb8b9e27907357bb040d99257d2cae683cb5bb" title='Last modified by Kapil Agrawal | April 12, 2026' target="_blank" rel="noopener">
+<a class="flex align-center" href="https://github.com/esnet/acme-proxy/commit/3df18d183014adf6fe7f72f30fb92e0938d5ab81" title='Last modified by Kapil Agrawal | May 9, 2026' target="_blank" rel="noopener">
     <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
-    <span>April 12, 2026</span>
+    <span>May 9, 2026</span>
   </a>
 
 </div>
@@ -632,8 +640,8 @@ Serving HTTPS on :443 ...</code></pre><h3 id="running-manually-without-systemd">
     </span>
     <span>
     
-      <a href="/user/" class="flex align-center">
-        <span>User Guide</span>
+      <a href="/client/" class="flex align-center">
+        <span>ACME Clients</span>
         <img src="/icons/forward.svg" class="book-icon" alt="Forward" />
       </a>
     

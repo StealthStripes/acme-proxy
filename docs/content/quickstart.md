@@ -149,8 +149,8 @@ Expected:
 Install acme.sh if not already present:
 
 ```sh
-sudo apt-get install -y acme.sh              # Debian / Ubuntu
-sudo dnf install -y epel-release acme.sh     # RHEL / Rocky
+sudo apt-get install -y acme.sh socat              # Debian / Ubuntu
+sudo dnf install -y epel-release acme.sh socat     # RHEL / Rocky
 ```
 
 Issue a certificate in standalone mode (temporarily binds port 80 for the HTTP-01 challenge):
