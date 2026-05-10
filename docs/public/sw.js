@@ -3,14 +3,14 @@ const pages = [
 
   "/quickstart/",
     "/install/",
-    "/user/",
     "/client/",
+    "/user/",
     "/",
     "/categories/",
     "/tags/",
     "/book.min.4d6d5ad3b0ae85d2a15b20ab217863f70db543e46314629e239ced759e674898.css",
-  "/en.search-data.min.e81ee6de94b6c9c070223bd6f0362ac8fe01ce3aebb20707e72221f83a8ec0b3.json",
-  "/en.search.min.668e10d1db7330b5e090bb1ec2227ad3dc51c85fc618bd0094574f5541c064e1.js",
+  "/en.search-data.min.7411455b4627997d1c8eb241128ad5d487dbc0244094454e2f9a030f407fd9ed.json",
+  "/en.search.min.3b53a73b50c77a03ef9f852162dd865a1ef44c853558a2c64c8f675e48958950.js",
   
 ];
 

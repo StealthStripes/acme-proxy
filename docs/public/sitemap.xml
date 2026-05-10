@@ -8,10 +8,10 @@
     <loc>http://localhost:1313/install/</loc>
     <lastmod>2026-05-09T16:31:07-05:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/user/</loc>
+    <loc>http://localhost:1313/client/</loc>
     <lastmod>2026-05-09T16:30:55-05:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/client/</loc>
+    <loc>http://localhost:1313/user/</loc>
     <lastmod>2026-05-09T16:30:55-05:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/</loc>
