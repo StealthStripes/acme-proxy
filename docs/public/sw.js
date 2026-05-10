@@ -9,8 +9,8 @@ const pages = [
     "/categories/",
     "/tags/",
     "/book.min.4d6d5ad3b0ae85d2a15b20ab217863f70db543e46314629e239ced759e674898.css",
-  "/en.search-data.min.560232984224282c27078d65b4572bf7282802ee88568cbaf35c061d4a55747f.json",
-  "/en.search.min.458eb6e181c2860af69aa9d544e2c0b9b1659497b5e1d07e925131a549e0be98.js",
+  "/en.search-data.min.e81ee6de94b6c9c070223bd6f0362ac8fe01ce3aebb20707e72221f83a8ec0b3.json",
+  "/en.search.min.668e10d1db7330b5e090bb1ec2227ad3dc51c85fc618bd0094574f5541c064e1.js",
   
 ];
 

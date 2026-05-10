@@ -1,0 +1,8 @@
+<h2 class="book-brand">
+  <a class="flex" style="flex-direction: column; align-items: flex-start;" href="{{ cond (not .Site.Home.File) hugo.Sites.Default.Home.RelPermalink .Site.Home.RelPermalink }}">
+    {{- with resources.Get "esnet-logo.png" -}}
+    <img src="{{ .RelPermalink }}" alt="ESnet" style="height: 48px; width: auto;" />
+    {{- end -}}
+    <span>{{ .Site.Title }}</span>
+  </a>
+</h2>

@@ -24,7 +24,7 @@ https://acme-proxy.example.com/acme/acme/directoryReplace acme-proxy.example.com
 Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Baremetal 3. Standalone Mode (Databases, Redis, Kafka etc.) 4. Docker and Docker Compose 5. Kubernetes (cert-manager) Prerequisites# The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See client.md for installation instructions and systemd renewal timer setup. Port 80 must be reachable from the acme-proxy server (used for HTTP-01 challenge validation). Your domain’s DNS must resolve to the host where the ACME client runs. Replace the following placeholders throughout this guide: acme-proxy.example.com — your acme-proxy hostname myserver.example.com — the domain you want a certificate for admin@example.com — your contact email 1. NGINX on Linux VM / Baremetal# acme.sh Register and issue a certificate (single domain):">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
-    <meta property="article:modified_time" content="2026-04-16T20:13:17-05:00">
+    <meta property="article:modified_time" content="2026-05-09T16:30:55-05:00">
 
 
   <meta itemprop="name" content="User Guide">
@@ -32,7 +32,7 @@ Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Bare
 ACME directory URL:
 https://acme-proxy.example.com/acme/acme/directoryReplace acme-proxy.example.com with your organization’s actual acme-proxy hostname.
 Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Baremetal 3. Standalone Mode (Databases, Redis, Kafka etc.) 4. Docker and Docker Compose 5. Kubernetes (cert-manager) Prerequisites# The ACME client must be installed and an account registered with acme-proxy before running any commands in this guide. See client.md for installation instructions and systemd renewal timer setup. Port 80 must be reachable from the acme-proxy server (used for HTTP-01 challenge validation). Your domain’s DNS must resolve to the host where the ACME client runs. Replace the following placeholders throughout this guide: acme-proxy.example.com — your acme-proxy hostname myserver.example.com — the domain you want a certificate for admin@example.com — your contact email 1. NGINX on Linux VM / Baremetal# acme.sh Register and issue a certificate (single domain):">
-  <meta itemprop="dateModified" content="2026-04-16T20:13:17-05:00">
+  <meta itemprop="dateModified" content="2026-05-09T16:30:55-05:00">
   <meta itemprop="wordCount" content="3310">
 
 <title>User Guide | acme-proxy</title>
@@ -43,7 +43,7 @@ Table of Contents# 1. NGINX on Linux VM / Baremetal 2. Apache on Linux VM / Bare
 
 
   <script defer src="/fuse.min.js"></script>
-  <script defer src="/en.search.min.458eb6e181c2860af69aa9d544e2c0b9b1659497b5e1d07e925131a549e0be98.js" integrity="sha256-RY624YHChgr2mqnVROLAubFllJe14dB&#43;klExpUngvpg=" crossorigin="anonymous"></script>
+  <script defer src="/en.search.min.668e10d1db7330b5e090bb1ec2227ad3dc51c85fc618bd0094574f5541c064e1.js" integrity="sha256-Zo4Q0dtzMLXgkLsewiJ609xRyF/GGL0AlFdPVUHAZOE=" crossorigin="anonymous"></script>
 
   <script defer src="/sw.min.6f6f90fcb8eb1c49ec389838e6b801d0de19430b8e516902f8d75c3c8bd98739.js" integrity="sha256-b2&#43;Q/LjrHEnsOJg45rgB0N4ZQwuOUWkC&#43;NdcPIvZhzk=" crossorigin="anonymous"></script>
 
@@ -1046,9 +1046,9 @@ Mount a host directory (e.g., <code>/var/www/acme-challenge</code>) into the con
   <div class="flex flex-wrap justify-between">
 
 <div>
-<a class="flex align-center" href="https://github.com/esnet/acme-proxy/commit/6a9d240ead99f034070b18adaa4415bb03f64132" title='Last modified by Kapil Agrawal | April 16, 2026' target="_blank" rel="noopener">
+<a class="flex align-center" href="https://github.com/esnet/acme-proxy/commit/3c01d2951d66782f2f5844ce2a052e01f59427b0" title='Last modified by Kapil Agrawal | May 9, 2026' target="_blank" rel="noopener">
     <img src="/icons/calendar.svg" class="book-icon" alt="Calendar" />
-    <span>April 16, 2026</span>
+    <span>May 9, 2026</span>
   </a>
 
 </div>
@@ -1097,6 +1097,17 @@ Mount a host directory (e.g., <code>/var/www/acme-challenge</code>) into the con
   
  
         
+
+<hr style="margin: 1rem 0;" />
+<div class="flex justify-center" style="gap: 2rem; padding: 0.5rem 0;">
+  
+    <img src="/esnet-logo.png" alt="ESnet" style="height: 48px; object-fit: contain;" />
+  
+  
+    <img src="/lbnl-logo.png" alt="Lawrence Berkeley National Laboratory" style="height: 48px; object-fit: contain;" />
+  
+</div>
+
         
   
  
