@@ -56,10 +56,15 @@ type AcmeProxyConfig struct {
 
 	// Prometheus metrics endpoint
 	Metrics Metrics `json:"metrics"`
+
+	// ACME challenge
+	ChallengeType string `json:"challenge_type,omitempty"` // "none" || "http-01" || "dns-01"
+	ChallengeDNSProvider string `json:"challenge_dns_provider,omitempty"`
 }
 
 // Validate checks if the AcmeProxyConfig contains required fields and valid values
 func (c *AcmeProxyConfig) Validate() error {
+	// TODO: handle when challengetype is dns and no provider passed
 	if c.CaURL == "" {
 		return errors.New("ca_url is required")
 	}
