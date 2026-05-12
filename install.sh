@@ -146,6 +146,7 @@ Group=${SERVICE_GROUP}
 # Paths
 ExecStart=${INSTALL_DIR}/step-ca ${CONFIG_FILE}
 WorkingDirectory=${INSTALL_DIR}
+EnvironmentFile=-${INSTALL_DIR}/env
 
 # Restart behavior
 Restart=on-failure
