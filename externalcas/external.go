@@ -19,6 +19,7 @@ import (
 	"github.com/go-acme/lego/v4/certcrypto"
 	"github.com/go-acme/lego/v4/certificate"
 	"github.com/go-acme/lego/v4/lego"
+	"github.com/go-acme/lego/v4/providers/dns"
 	"github.com/go-acme/lego/v4/registration"
 	"github.com/smallstep/certificates/cas/apiv1"
 )
@@ -58,13 +59,12 @@ type AcmeProxyConfig struct {
 	Metrics Metrics `json:"metrics"`
 
 	// ACME challenge
-	ChallengeType string `json:"challenge_type,omitempty"` // "none" || "http-01" || "dns-01"
+	ChallengeType string `json:"challenge_type,omitempty"` // "dns-01" or emtpy
 	ChallengeDNSProvider string `json:"challenge_dns_provider,omitempty"`
 }
 
 // Validate checks if the AcmeProxyConfig contains required fields and valid values
 func (c *AcmeProxyConfig) Validate() error {
-	// TODO: handle when challengetype is dns and no provider passed
 	if c.CaURL == "" {
 		return errors.New("ca_url is required")
 	}
@@ -79,6 +79,9 @@ func (c *AcmeProxyConfig) Validate() error {
 	}
 	if c.Metrics.Enabled && c.Metrics.DataSource == "" {
 		return errors.New("metrics.datasource is required when metrics is enabled")
+	}
+	if c.ChallengeType == "dns-01" && c.ChallengeDNSProvider == "" {
+		return errors.New("dns challenge provider is required when dns-01 is used")
 	}
 	return nil
 }
@@ -229,6 +232,17 @@ func (c *ExternalCAS) createLegoClient(cfg *AcmeProxyConfig) (ACMEClient, error)
 	client, err := lego.NewClient(config)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create lego client: %w", err)
+	}
+
+	if cfg.ChallengeType == "dns-01" {
+		provider, err := dns.NewDNSChallengeProviderByName(cfg.ChallengeDNSProvider)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create DNS challenge provider: %w", err)
+		}
+		err = client.Challenge.SetDNS01Provider(provider)
+		if err != nil {
+			return nil, fmt.Errorf("failed to setup DNS challenge provider: %w", err)
+		}
 	}
 
 	// Register with External Account Binding
