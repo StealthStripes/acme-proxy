@@ -84,6 +84,34 @@ Set these five fields — everything else can stay at its default:
 
 ---
 
+### Optional — Solve CA DNS Chalenges
+
+acme-proxy can be configured to solve DNS challenges from the CA, like InCommon or ZeroSSL.
+To do so, set the following options in `/opt/acme-proxy/ca.json`:
+
+```json
+{
+  ...
+  "authority": {
+    ...
+    "config": {
+      "challenge_type": "dns-01",
+      "challenge_dns_provider": "your_supported_provider"
+    }
+  }
+  ...
+}
+```
+
+| Field | Valid options |
+|-------|------------------|
+| `challenge_type` | Set to `"dns-01"` to enable feature, otherwise leave empty |
+| `challenge_dns_provider` | https://go-acme.github.io/lego/dns/index.html#dns-providers |
+
+Any provider supported by lego can be used. The value in `CLI flag name` column is the value used.
+
+---
+
 ## Step 3 — Start
 
 ```sh

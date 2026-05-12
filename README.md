@@ -123,6 +123,25 @@ Most commercial certificate authorities (such as Sectigo) support certificate is
   "eab_hmac_key": "",
 ```
 
+### Solving CA DNS Challenges
+
+acme-proxy can be configured to solve DNS challenges from the CA, like InCommon or ZeroSSL.
+To do so, set the following options in `/opt/acme-proxy/ca.json`:
+
+```json
+{
+  ...
+  "authority": {
+    ...
+    "config": {
+      "challenge_type": "dns-01",
+      "challenge_dns_provider": "your_supported_provider"
+    }
+  }
+  ...
+}
+```
+
 ### Starting acme-proxy
 
 After configuring `ca.json` file simply start the systemd service

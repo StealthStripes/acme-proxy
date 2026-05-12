@@ -98,6 +98,7 @@ User=acme-proxy
 Group=acme-proxy
 ExecStart=/opt/acme-proxy/step-ca /opt/acme-proxy/ca.json
 WorkingDirectory=/opt/acme-proxy
+EnvironmentFile=-${INSTALL_DIR}/env
 Restart=on-failure
 RestartSec=5
 NoNewPrivileges=yes
