@@ -126,7 +126,7 @@ Most commercial certificate authorities (such as Sectigo) support certificate is
 ### Solving CA DNS Challenges
 
 acme-proxy can be configured to solve DNS challenges from the CA, like InCommon or ZeroSSL.
-To do so, set the following options in `/opt/acme-proxy/ca.json`:
+The following are several applicable options:
 
 ```json
 {
@@ -141,6 +141,8 @@ To do so, set the following options in `/opt/acme-proxy/ca.json`:
   ...
 }
 ```
+
+This also requires passing API keys and other important information as environment variables.
 
 ### Starting acme-proxy
 

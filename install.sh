@@ -5,6 +5,7 @@ REPO="esnet/acme-proxy"
 INSTALL_DIR="${INSTALL_DIR:-/opt/acme-proxy}"
 DB_DIR="${DB_DIR:-${INSTALL_DIR}/db}"
 CONFIG_FILE="${CONFIG_FILE:-${INSTALL_DIR}/ca.json}"
+ENV_FILE="${ENV_FILE:-${INSTALL_DIR}/env}"
 SERVICE_USER="${SERVICE_USER:-acme-proxy}"
 SERVICE_GROUP="${SERVICE_GROUP:-acme-proxy}"
 
@@ -103,6 +104,14 @@ cat > "$CONFIG_FILE" << EOF
 }
 EOF
 
+echo "Creating env file..."
+cat > "$ENV_FILE" << EOF
+# This file is used to set environment variables for the server
+# which is primarily for passing API keys and necessary information to lego DNS providers
+# https://go-acme.github.io/lego/dns/index.html#dns-providers
+EXAMPLE_DNS_API_TOKEN="your_api_token"
+EOF
+
 echo "Downloading latest release..."
 LATEST_RELEASE=$(curl -s "https://api.github.com/repos/${REPO}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 BINARY_NAME="step-ca_${OS}_${ARCH}"
@@ -146,7 +155,7 @@ Group=${SERVICE_GROUP}
 # Paths
 ExecStart=${INSTALL_DIR}/step-ca ${CONFIG_FILE}
 WorkingDirectory=${INSTALL_DIR}
-EnvironmentFile=-${INSTALL_DIR}/env
+EnvironmentFile=-${ENV_FILE}
 
 # Restart behavior
 Restart=on-failure

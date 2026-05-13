@@ -108,7 +108,16 @@ To do so, set the following options in `/opt/acme-proxy/ca.json`:
 | `challenge_type` | Set to `"dns-01"` to enable feature, otherwise leave empty |
 | `challenge_dns_provider` | https://go-acme.github.io/lego/dns/index.html#dns-providers |
 
-Any provider supported by lego can be used. The value in `CLI flag name` column is the value used.
+Any provider supported by lego can be used. The value in `CLI flag name` column is the value used in `ca.json`.
+
+Environment variables are used to pass API keys and other necessary information to lego DNS providers.
+These environment variables are source from `/opt/acme-proxy/env`.
+
+Here is an example with cloudflare:
+
+```txt
+CF_DNS_API_TOKEN="your_api_token"
+```
 
 ---
 

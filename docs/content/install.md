@@ -34,6 +34,7 @@ All defaults are overridable:
 INSTALL_DIR=/opt/acme-proxy
 DB_DIR=/opt/acme-proxy/db
 CONFIG_FILE=/opt/acme-proxy/ca.json
+ENV_FILE=/opt/acme-proxy/env
 SERVICE_USER=acme-proxy
 SERVICE_GROUP=acme-proxy
 ```
@@ -51,6 +52,7 @@ curl -fsSL https://raw.githubusercontent.com/esnet/acme-proxy/main/install.sh | 
 |------|-------------|
 | `$INSTALL_DIR/step-ca` | The server binary |
 | `$INSTALL_DIR/ca.json` | Configuration file (template — must be edited) |
+| `$INSTALL_DIR/env` | Environment file (template — must be edited if responding to CA DNS challenges) |
 | `$DB_DIR/bbolt` | bbolt KV store for ACME account state |
 | `/etc/systemd/system/acme-proxy.service` | Systemd service unit |
 
@@ -98,7 +100,7 @@ User=acme-proxy
 Group=acme-proxy
 ExecStart=/opt/acme-proxy/step-ca /opt/acme-proxy/ca.json
 WorkingDirectory=/opt/acme-proxy
-EnvironmentFile=-${INSTALL_DIR}/env
+EnvironmentFile=-/opt/acme-proxy/env
 Restart=on-failure
 RestartSec=5
 NoNewPrivileges=yes
@@ -276,10 +278,20 @@ All install methods use the same `ca.json` configuration format. The install scr
 | `authority.config.eab_kid` | Yes | External Account Binding Key ID, obtained from your CA's account portal. |
 | `authority.config.eab_hmac_key` | Yes | External Account Binding HMAC key, obtained from your CA's account portal. |
 | `authority.config.certlifetime` | No | Request certificate with a max lifetime period if supported by upstream CA |
+| `authority.config.challenge_type` | No | Optionally respond to ACME challenges. Only `"dns-01"` is supported, leave empty to not respond to challenges |
+| `authority.config.challenge_dns_provider` | No | Provider from https://go-acme.github.io/lego/dns/index.html#dns-providers, required if `challenge_type` equals `"dns-01"` |
 | `authority.config.metrics.enabled` | No | Expose Prometheus metrics. Default: `true`. |
 | `authority.config.metrics.port` | No | Metrics port. Default: `9234`. |
 | `db.dataSource` | Yes | Path to the bbolt KV store directory. Must be writable by the service user. |
 | `commonName` | Yes | Common name for the proxy's own TLS certificate. Should match `dnsNames[0]`. |
+
+#### Solving CA DNS Challenges
+
+The acme-proxy can be configured to solve ACME DNS challenges from the upstream CA.
+To do so, you must set `authority.config.challenge_type` and `authority.config.challenge_dns_provider` in `ca.json`.
+You must also set environment variables as defined in the lego documentation: https://go-acme.github.io/lego/dns/index.html#dns-providers.
+This can be done by setting them in the environment file (`/opt/acme-proxy/env` if using default install script),
+or passing them as environment variables to docker.
 
 ### Upstream CA URLs
 
